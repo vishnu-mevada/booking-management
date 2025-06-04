@@ -1,0 +1,108 @@
+<mat-card class="search-card">
+  <mat-card-title class="search-card-title">Booking Search</mat-card-title>
+  <mat-card-content>
+    <div class="search-form-container">
+      <!-- Search by ID -->
+      <div class="form-section">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Enter Booking ID</mat-label>
+          <input matInput type="number" [(ngModel)]="bookingId" placeholder="e.g. 1" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="getBookingDetails(bookingId)">
+          Search by ID
+        </button>
+      </div>
+
+      <!-- Search by Name -->
+      <div class="form-section">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>First Name</mat-label>
+          <input matInput [(ngModel)]="firstname" placeholder="e.g. Sally" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput [(ngModel)]="lastname" placeholder="e.g. Brown" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="searchByName()">
+          Search by Name
+        </button>
+      </div>
+
+      <!-- Search by Date -->
+      <div class="form-section">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Check-in Date</mat-label>
+          <input matInput [matDatepicker]="checkinPicker" [(ngModel)]="checkin" placeholder="YYYY-MM-DD" />
+          <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
+          <mat-datepicker #checkinPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Check-out Date</mat-label>
+          <input matInput [matDatepicker]="checkoutPicker" [(ngModel)]="checkout" placeholder="YYYY-MM-DD" />
+          <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
+          <mat-datepicker #checkoutPicker></mat-datepicker>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="searchByDate()">
+          Search by Date
+        </button>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<br>
+
+<mat-card class="booking-card shadow-md">
+  <mat-card-header>
+    <div mat-card-avatar class="avatar-icon">
+      <mat-icon>event</mat-icon>
+    </div>
+    <mat-card-title>Booking #{{ booking.bookingid }}</mat-card-title>
+    <mat-card-subtitle>{{ booking.booking.firstname }} {{ booking.booking.lastname }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <div class="info-grid">
+      <div class="info-item">
+        <mat-icon color="accent">attach_money</mat-icon>
+        <span>Total Price: {{ booking.booking.totalprice }}</span>
+      </div>
+
+      <div class="info-item">
+        <mat-icon color="accent">check_circle</mat-icon>
+        <span>Deposit: {{ booking.booking.depositpaid ? 'Yes' : 'No' }}</span>
+      </div>
+
+      <div class="info-item">
+        <mat-icon color="accent">login</mat-icon>
+        <span>Check-in: {{ booking.booking.bookingdates.checkin }}</span>
+      </div>
+
+      <div class="info-item">
+        <mat-icon color="accent">logout</mat-icon>
+        <span>Check-out: {{ booking.booking.bookingdates.checkout }}</span>
+      </div>
+
+      <div class="info-item">
+        <mat-icon color="accent">restaurant</mat-icon>
+        <span>Needs: {{ booking.booking.additionalneeds }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-actions align="end">
+    <button mat-stroked-button color="primary" [routerLink]="['/update', booking.bookingid]">
+      <mat-icon>edit</mat-icon>
+      Update
+    </button>
+    <button mat-flat-button color="warn" (click)="onDelete($event, booking.bookingid)">
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
+  </mat-card-actions>
+</mat-card>

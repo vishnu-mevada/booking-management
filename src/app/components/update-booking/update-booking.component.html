@@ -1,0 +1,58 @@
+<!-- booking-form.component.html -->
+<mat-card class="booking-card">
+  <mat-card-title>Update Booking</mat-card-title>
+  <hr>
+  <mat-card-content>
+    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()" class="booking-form">
+
+      <!-- Name Fields -->
+      <div class="form-row">
+        <mat-form-field appearance="fill">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstname" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastname" />
+        </mat-form-field>
+      </div>
+
+      <!-- Price and Deposit -->
+      <div class="form-row">
+        <mat-form-field appearance="fill">
+          <mat-label>Total Price</mat-label>
+          <input matInput type="number" formControlName="totalprice" />
+        </mat-form-field>
+
+        <mat-checkbox formControlName="depositpaid">Deposit Paid</mat-checkbox>
+      </div>
+
+      <!-- Booking Dates -->
+      <div class="form-row" formGroupName="bookingdates">
+        <mat-form-field appearance="fill">
+          <mat-label>Check-in Date</mat-label>
+          <input matInput [matDatepicker]="checkinPicker" formControlName="checkin" />
+          <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
+          <mat-datepicker #checkinPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Check-out Date</mat-label>
+          <input matInput [matDatepicker]="checkoutPicker" formControlName="checkout" />
+          <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
+          <mat-datepicker #checkoutPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- Additional Needs -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Additional Needs</mat-label>
+        <input matInput formControlName="additionalneeds" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Submit Booking</button>
+
+    </form>
+  </mat-card-content>
+</mat-card>

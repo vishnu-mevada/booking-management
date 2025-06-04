@@ -1,0 +1,78 @@
+.search-card {
+  max-width: 900px;
+  margin: 20px 0 auto;
+  padding: 16px;
+}
+
+.search-card-title {
+  // margin-top: 1rem;
+  // margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.search-form-container {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  border: 1px solid #ddd;
+  padding: 16px;
+  background: #fff;
+  overflow-x: auto;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 220px;
+  gap: 12px;
+}
+
+mat-form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.booking-card {
+  max-width: 900px;
+  margin: 12px 0 auto;
+  border-radius: 12px;
+  background-color: #fafafa;
+  padding: 16px;
+}
+
+.avatar-icon {
+  background-color: #3f51b5;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #333;
+  font-size: 15px;
+}
+
+mat-divider {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}

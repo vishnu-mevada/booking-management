@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://restful-booker.herokuapp.com",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}
