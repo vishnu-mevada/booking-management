@@ -53,13 +53,21 @@
 
 <br>
 
-<mat-card class="booking-card shadow-md">
+<div *ngIf="!booking" class="no-booking-message">
+  <mat-card class="p-4 text-center">
+    <mat-icon color="warn" fontIcon="error" style="font-size: 40px;"></mat-icon>
+    <h2>Booking not found</h2>
+    <p>Please check the booking ID, Date, or Name correct and try again.</p>
+  </mat-card>
+</div>
+
+<mat-card *ngIf="booking" class="booking-card shadow-md">
   <mat-card-header>
     <div mat-card-avatar class="avatar-icon">
       <mat-icon>event</mat-icon>
     </div>
-    <mat-card-title>Booking #{{ booking.bookingid }}</mat-card-title>
-    <mat-card-subtitle>{{ booking.booking.firstname }} {{ booking.booking.lastname }}</mat-card-subtitle>
+    <mat-card-title>Booking #{{ booking?.bookingid }}</mat-card-title>
+    <mat-card-subtitle>{{ booking?.firstname }} {{ booking?.lastname }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-divider></mat-divider>
@@ -68,27 +76,27 @@
     <div class="info-grid">
       <div class="info-item">
         <mat-icon color="accent">attach_money</mat-icon>
-        <span>Total Price: {{ booking.booking.totalprice }}</span>
+        <span>Total Price: {{ booking?.totalprice }}</span>
       </div>
 
       <div class="info-item">
         <mat-icon color="accent">check_circle</mat-icon>
-        <span>Deposit: {{ booking.booking.depositpaid ? 'Yes' : 'No' }}</span>
+        <span>Deposit: {{ booking?.depositpaid ? 'Yes' : 'No' }}</span>
       </div>
 
       <div class="info-item">
         <mat-icon color="accent">login</mat-icon>
-        <span>Check-in: {{ booking.booking.bookingdates.checkin }}</span>
+        <span>Check-in: {{ booking?.bookingdates.checkin }}</span>
       </div>
 
       <div class="info-item">
         <mat-icon color="accent">logout</mat-icon>
-        <span>Check-out: {{ booking.booking.bookingdates.checkout }}</span>
+        <span>Check-out: {{ booking?.bookingdates.checkout }}</span>
       </div>
 
       <div class="info-item">
         <mat-icon color="accent">restaurant</mat-icon>
-        <span>Needs: {{ booking.booking.additionalneeds }}</span>
+        <span>Needs: {{ booking?.additionalneeds }}</span>
       </div>
     </div>
   </mat-card-content>

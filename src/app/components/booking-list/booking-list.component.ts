@@ -9,13 +9,12 @@ import { DatePipe } from '@angular/common';
   selector: 'app-booking-list',
   templateUrl: './booking-list.component.html',
   styleUrls: ['./booking-list.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class BookingListComponent implements OnInit, OnDestroy {
-
   private destroy$ = new Subject<void>();
 
-  booking: any = {};
+  booking: any = null;
   bookingId: number | null = null;
   firstname: string = '';
   lastname: string = '';
@@ -25,46 +24,48 @@ export class BookingListComponent implements OnInit, OnDestroy {
   // Display dummy data if not found any result;
   bookingDummyData = {
     bookingid: 1,
-    booking: {
-      firstname: 'Jim',
-      lastname: 'Brown',
-      totalprice: 111,
-      depositpaid: true,
-      bookingdates: {
-        checkin: '2018-01-01',
-        checkout: '2019-01-01'
-      },
-      additionalneeds: 'Breakfast'
-    }
+    firstname: 'Test',
+    lastname: 'User',
+    totalprice: 111,
+    depositpaid: true,
+    bookingdates: {
+      checkin: '2018-01-01',
+      checkout: '2019-01-01',
+    },
+    additionalneeds: 'Breakfast',
   };
 
   constructor(
     private bookingService: BookingService,
     private notify: NotificationService,
-    private datePipe: DatePipe,
-  ) { }
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
     this.booking = this.bookingDummyData;
   }
 
   getBookingDetails(id: number | null) {
-
     if (!id) {
       this.notify.warning('Invalid booking ID.');
       return;
     }
 
-    this.bookingService.getBookingById(id)
+    this.bookingService
+      .getBookingById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ((res: any) => {
-          this.booking = res;
-        }),
-        error: ((error: any) => {
-          this.notify.error(`Status: ${error.status}, Message: ${error.message}`);
-        })
-      })
+        next: (res: any) => {
+          this.booking =
+            res && typeof res === 'object' && !Array.isArray(res) ? {...res, bookingid: id} : null;
+          this.bookingId = null;
+        },
+        error: (error: any) => {
+          this.notify.error(
+            `Status: ${error.status}, Message: ${error.message}`
+          );
+        },
+      });
   }
 
   searchByName(): void {
@@ -73,15 +74,24 @@ export class BookingListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.bookingService.getBookingByName(this.firstname, this.lastname)
+    this.bookingService
+      .getBookingByName(this.firstname, this.lastname)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          this.booking = res;
+          if (res.length && res[0].bookingid) {
+            this.getBookingDetails(res[0].bookingid);
+          } else {
+            this.notify.info("Not found any data!")
+          }
+          this.firstname = '';
+          this.lastname = '';
         },
         error: (error: any) => {
-          this.notify.error(`Status: ${error.status}, Message: ${error.message}`);
-        }
+          this.notify.error(
+            `Status: ${error.status}, Message: ${error.message}`
+          );
+        },
       });
   }
 
@@ -92,32 +102,44 @@ export class BookingListComponent implements OnInit, OnDestroy {
     }
 
     const checkinStr: any = this.datePipe.transform(this.checkin, 'yyyy-MM-dd');
-    const checkoutStr: any = this.datePipe.transform(this.checkin, 'yyyy-MM-dd');
+    const checkoutStr: any = this.datePipe.transform(this.checkout, 'yyyy-MM-dd');
 
-    this.bookingService.getBookingByDate(checkinStr, checkoutStr)
+    this.bookingService
+      .getBookingByDate(checkinStr, checkoutStr)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          this.booking = res;
+          if (res.length && res[0].bookingid) {
+            this.getBookingDetails(res[0].bookingid);
+          } else {
+            this.notify.info('Not found any data!');
+          }
+          this.checkin = null;
+          this.checkout = null;
         },
         error: (error: any) => {
-          this.notify.error(`Status: ${error.status}, Message: ${error.message}`);
-        }
+          this.notify.error(
+            `Status: ${error.status}, Message: ${error.message}`
+          );
+        },
       });
   }
 
   onDelete(event: Event, id: number) {
     event.preventDefault();
 
-    this.bookingService.deleteBooking(id)
+    this.bookingService
+      .deleteBooking(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.booking = {};
         },
         error: (error: any) => {
-          this.notify.error(`Status: ${error.status}, Message: ${error.message}`);
-        }
+          this.notify.error(
+            `Status: ${error.status}, Message: ${error.message}`
+          );
+        },
       });
   }
 

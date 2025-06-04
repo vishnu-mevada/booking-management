@@ -52,7 +52,8 @@ export class UpdateBookingComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: any) => {
           this.bookingForm.patchValue({
-            ...res.data
+            ...res,
+            bookingid: id
           })
         },
         error: (error: any) => {
